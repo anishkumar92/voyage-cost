@@ -66,3 +66,8 @@
         sourceCurrency: string;
         paymentCurrencies: PaymentCurrency[];
     }
+
+    export interface ApiData {
+        costApi: CostAPI;
+        exchangeApi: ExchangeRateAPI;
+    }
