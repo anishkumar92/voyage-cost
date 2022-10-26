@@ -1,1 +1,32 @@
-<p>cost works!</p>
+<div class="container">
+    <div class="row align-items-start">
+      <div class="col-sm-2">
+        <h3 class="heading">COSTS</h3>
+      </div>
+      <div class="col-sm-7">
+        
+      </div>
+      <div class="col-3 justify-content-end samerow">
+        <div class="row">
+            <div class="col-sm-3 currency-text">
+                Currency
+            </div>
+            <div class="col-sm-3">
+                <select class="form-select dropdown-size" aria-label="SGD">
+                    <ng-container *ngFor="let item of dropdown; let i = index">
+                        <option value="item">{{item.toCurrency}}</option>
+                    </ng-container>
+                  </select>
+            </div>
+            <div class="col-sm-6 currency-text">1 USD = <b>1.3161 SGD</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="row card-header align-items-start">
+        <div class="col-2">Port Expense</div>
+        <div class="col-4">Account Code</div>
+        <div class="col-1">Quoted</div>
+        <div class="col-2">Screened</div>
+        <div class="col-3"></div>
+    </div>
+  </div>

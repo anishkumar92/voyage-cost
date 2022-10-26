@@ -8,7 +8,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    
+   }
 
   public getCosts(): Observable<CostAPI> {
     return this.http.get<CostAPI>('/assets/costs.json');
@@ -17,5 +19,9 @@ export class AppService {
   public getExchangeRate(): Observable<ExchangeRateAPI> {
     return this.http.get<ExchangeRateAPI>('/assets/exchange-rates.json');
   }
+
+  
+
+
 
 }
