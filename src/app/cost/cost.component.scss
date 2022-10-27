@@ -23,7 +23,7 @@
 
 .dropdown-size{
     font-size: 12px;
-    width: 100px;
+    width: 75px;
    
     margin: 0px;
     height: 40px;
@@ -45,7 +45,48 @@
 }
 
 
+.currency-wrap{
+    position:relative;
+    font-size: 12px;
+}
 
+.currency-code{
+    position:absolute;
+    left:16px;
+    top:10px;
+    color: grey;
+}
+
+.text-currency{
+    padding:10px 20px;
+    border:solid 1px #ccc;
+    border-radius:5px;
+    text-align: right;
+    font-size: 12px;
+}
+
+.small-text{
+    font-size: 12px;
+}
+
+.card-content{
+    background-color: white;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.small-bottom-text{
+    font-size: 12px;
+    justify-content: end;
+    padding-right: 14px;
+}
+.grey{
+    color:grey;
+}
+
+.mb-0{
+    margin-bottom: 0px !important;
+}
 //  .mat-grid-tile-content ::ng-deep {
 //     justify-content: flex-start !important ;
 //     align-items: flex-start !important;

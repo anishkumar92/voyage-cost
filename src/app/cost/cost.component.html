@@ -22,11 +22,33 @@
         </div>
       </div>
     </div>
+    <ng-container *ngFor="let cost of costs; let j = index">
     <div class="row card-header align-items-start">
-        <div class="col-2">Port Expense</div>
+        <div class="col-2">{{cost.name}}</div>
         <div class="col-4">Account Code</div>
         <div class="col-1">Quoted</div>
         <div class="col-2">Screened</div>
         <div class="col-3"></div>
     </div>
+    <div *ngFor="let costItem of cost.costItems; let k = index" class="row card-content align-items-start">
+        <div class="col-2">{{costItem.name}}</div>
+        <div class="col-4">{{costItem.costItemAlias.accountingCode}}</div>
+        <div class="col-1 small-text">
+            <div class="row"><p class="mb-0"> <span style="color: grey">SGD</span> {{costItem.costs[0].amount}}</p></div>
+            <div class="row grey"><p>USD 759.82</p></div>
+        </div>
+        <div class="col-2">
+            <div class="row">
+
+                <div class="currency-wrap">
+                    <span class="currency-code">SGD</span>
+                    <input type="text" class="form-control text-currency"  value="{{costItem.costs[1].amount}}" aria-label="Amount (to the nearest dollar)">
+                </div>
+            </div>
+            <div class="row small-bottom-text grey"> USD 1519.64</div>
+            
+          </div>
+        <div class="col-3"></div>
+    </div>
+  </ng-container>
   </div>

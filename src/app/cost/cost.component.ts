@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiData, CostAPI, ExchangeRateAPI, PaymentCurrency } from '../models';
+import { ApiData, Cost, CostAPI, ExchangeRateAPI, PaymentCurrency } from '../models';
 
 @Component({
   selector: 'app-cost',
@@ -10,12 +10,12 @@ import { ApiData, CostAPI, ExchangeRateAPI, PaymentCurrency } from '../models';
 export class CostComponent implements OnInit {
   costApi!: CostAPI;
   exchangeApi!: ExchangeRateAPI;
-  flexstart = "flex-start";
   dropdown:PaymentCurrency[] = [];
+  costs!:Cost[];
   constructor(private route:ActivatedRoute) {
     this.costApi = route.snapshot.data['costApi'];
     this.exchangeApi = route.snapshot.data['exchangeApi'];
-
+    this.costs = this.costApi.costs;
     
     console.log("exchangeApi",this.exchangeApi);
     console.log("costApi",this.costApi);
