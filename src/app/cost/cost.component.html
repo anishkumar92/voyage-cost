@@ -12,13 +12,11 @@
                 Currency
             </div>
             <div class="col-sm-3">
-                <select class="form-select dropdown-size" aria-label="SGD">
-                    <ng-container *ngFor="let item of dropdown; let i = index">
-                        <option value="item">{{item.toCurrency}}</option>
-                    </ng-container>
+                <select class="form-select dropdown-size" aria-label="sourceCurrency"  (change) = "onChange($any($event.target).value)">
+                        <option [selected]="item==sourceCurrency" [value]="item" *ngFor="let item of dropdown; let i = index">{{item}}</option>
                   </select>
             </div>
-            <div class="col-sm-6 currency-text">1 USD = <b>1.3161 SGD</b></div>
+            <div class="col-sm-6 currency-text">1 {{baseCurrency}} = <b>{{convertCurrency(1,baseCurrency,sourceCurrency) | number:'0.0-4'}} {{sourceCurrency}}</b></div>
         </div>
       </div>
     </div>
@@ -34,18 +32,18 @@
         <div class="col-2">{{costItem.name}}</div>
         <div class="col-4">{{costItem.costItemAlias.accountingCode}}</div>
         <div class="col-1 small-text">
-            <div class="row"><p class="mb-0"> <span style="color: grey">SGD</span> {{costItem.costs[0].amount}}</p></div>
-            <div class="row grey"><p>USD 759.82</p></div>
+            <div class="row"><p class="mb-0"> <span style="color: grey">{{sourceCurrency}}</span> {{convertCurrency(costItem.costs[0].amount,initialCurrency,sourceCurrency) | number:'1.2-2'}}</p></div>
+            <div class="row grey"><p>{{baseCurrency}} {{convertCurrency(convertCurrency(costItem.costs[0].amount,initialCurrency,sourceCurrency),sourceCurrency,baseCurrency) | number:'1.2-2'}}</p></div>
         </div>
         <div class="col-2">
             <div class="row">
 
                 <div class="currency-wrap">
-                    <span class="currency-code">SGD</span>
-                    <input type="text" class="form-control text-currency"  value="{{costItem.costs[1].amount}}" aria-label="Amount (to the nearest dollar)">
+                    <span class="currency-code">{{sourceCurrency}}</span>
+                    <input type="text" class="form-control text-currency"  value="{{convertCurrency(costItem.costs[1].amount,initialCurrency,sourceCurrency) | number:'1.2-2'}}" aria-label="Amount (to the nearest dollar)">
                 </div>
             </div>
-            <div class="row small-bottom-text grey"> USD 1519.64</div>
+            <div class="row small-bottom-text grey"> {{baseCurrency}} {{convertCurrency(convertCurrency(costItem.costs[1].amount,initialCurrency,sourceCurrency),sourceCurrency,baseCurrency) | number:'1.2-2'}}</div>
             
           </div>
         <div class="col-3"></div>
