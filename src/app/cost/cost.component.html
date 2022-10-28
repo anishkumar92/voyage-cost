@@ -1,10 +1,7 @@
 <div class="container">
     <div class="row align-items-start">
-      <div class="col-sm-2">
+      <div class="col-9">
         <h3 class="heading">COSTS</h3>
-      </div>
-      <div class="col-sm-7">
-        
       </div>
       <div class="col-3 justify-content-end samerow">
         <div class="row">
@@ -24,14 +21,14 @@
     <div class="row card-header align-items-start">
         <div class="col-2">{{cost.name}}</div>
         <div class="col-4">Account Code</div>
-        <div class="col-1">Quoted</div>
+        <div class="col-2 ">Quoted</div>
         <div class="col-2">Screened</div>
-        <div class="col-3"></div>
+        <div class="col-4"></div>
     </div>
     <div *ngFor="let costItem of cost.costItems; let k = index" class="row card-content align-items-start">
         <div class="col-2">{{costItem.name}}</div>
         <div class="col-4">{{costItem.costItemAlias.accountingCode}}</div>
-        <div class="col-1 small-text">
+        <div class="col-2 small-text">
             <div class="row"><p class="mb-0"> <span style="color: grey">{{sourceCurrency}}</span> {{convertCurrency(costItem.costs[0].amount,initialCurrency,sourceCurrency) | number:'1.2-2'}}</p></div>
             <div class="row grey"><p>{{baseCurrency}} {{convertCurrency(convertCurrency(costItem.costs[0].amount,initialCurrency,sourceCurrency),sourceCurrency,baseCurrency) | number:'1.2-2'}}</p></div>
         </div>
@@ -40,13 +37,13 @@
 
                 <div class="currency-wrap">
                     <span class="currency-code">{{sourceCurrency}}</span>
-                    <input type="text" class="form-control text-currency"  value="{{convertCurrency(costItem.costs[1].amount,initialCurrency,sourceCurrency) | number:'1.2-2'}}" aria-label="Amount (to the nearest dollar)">
+                    <input id="screened" class="form-control text-currency" [(ngModel)]="costItem.costs[1].amount" value="{{convertCurrency(costItem.costs[1].amount,initialCurrency,sourceCurrency)}}" aria-label="Amount (to the nearest dollar)">
                 </div>
             </div>
             <div class="row small-bottom-text grey"> {{baseCurrency}} {{convertCurrency(convertCurrency(costItem.costs[1].amount,initialCurrency,sourceCurrency),sourceCurrency,baseCurrency) | number:'1.2-2'}}</div>
             
           </div>
-        <div class="col-3"></div>
+        <div class="col-4"></div>
     </div>
   </ng-container>
   </div>

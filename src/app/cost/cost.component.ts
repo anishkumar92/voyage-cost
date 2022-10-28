@@ -38,16 +38,9 @@ export class CostComponent implements OnInit {
       this.dropdown.push(v.toCurrency);
     });
     console.log("dropdown",this.dropdown);
+    
   }
 
-  // convertCurrency(amount:number,from:string,to:string):number{
-
-  // let sgRate:number = this.paymentCurrencies?.find(v=> v.toCurrency === from)?.exchangeRate || 0; //0.7598199759292418
-  // let sgAmt:number = amount*sgRate; //0.7598199759292418
-  // let toRate:number = this.paymentCurrencies?.find(v=> v.toCurrency === to)?.exchangeRate || 0; 
-  // let toAmt:number = toRate*sgAmt;
-  //   return toAmt;
-  // }
   convertCurrency(amount:number,from:string,to:string):number{
    
 
