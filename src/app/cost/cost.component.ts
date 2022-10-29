@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Cost, CostAPI, ExchangeRateAPI, PaymentCurrency, CostItem } from '../models';
 import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -9,6 +9,10 @@ import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl,
   styleUrls: ['./cost.component.scss']
 })
 export class CostComponent implements OnInit {
+  @ViewChildren('commentInput') commentInput!: QueryList<ElementRef>;
+  // @ViewChild('commentInput') commentInput!:ElementRef;
+  @ViewChild('internaltype') internaltype!:ElementRef;
+
   costApi: CostAPI;
   data: Cost[];
   exchangeApi: ExchangeRateAPI;
@@ -91,8 +95,9 @@ export class CostComponent implements OnInit {
         id: costItems.annotation.id,
         name: costItems.annotation.name,
       },
-      costs: costItems.costs ? this.fb.array(this.getCostItemCost(costItems.costs)) : undefined,
-      comments: costItems.comments ? this.fb.array(this.getComments(costItems.comments)) : undefined,
+      costs: costItems.costs ? this.fb.array(this.getCostItemCost(costItems.costs)) : this.fb.array(this.getCostItemCost([])),
+      comments: costItems.comments ? this.fb.array(this.getComments(costItems.comments)) : this.fb.array(this.getComments([])),
+      toggle: costItems.comments? true:false
     }));
   }
 
@@ -177,4 +182,54 @@ export class CostComponent implements OnInit {
     return this.form.value.costs[costIndex].costItems[costItemIndex].comments[commentIndex].type == "Internal"
   }
 
+  addComments(costIndex: number, costItemIndex: number) {
+    let comment ="";
+   this.commentInput.forEach((v,i)=>{
+    console.log(v)
+    if(i===costItemIndex){
+      comment=v.nativeElement.value;
+
+    }
+   });
+// let dumarr= this.form.value.costs[costIndex].costItems[costItemIndex].comments;
+    let mmt = [{ id: 503,
+      daStage: "PDA",
+      persona: "BACKOFFICE",
+      author: "Mr. Agency BO",
+      comment: comment,
+      type: this.internaltype?.nativeElement.value,
+      date: "2021-03-01T10:15:35.927924Z"
+    }];
+
+    // dumarr.push(mmt);
+    let cmtcntrol = this.getComments(mmt);
+    // let smt:any = {} 
+    
+    // console.log("cmt",cmtcntrol)
+    // this.form.controls.costs[0].costItems[0].comments.push(mmt)
+    // (<FormArray>(<FormArray>(<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')).controls[costItemIndex].get('comments')).removeAt(0);
+
+    (<FormArray>(<FormArray>(<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')).controls[costItemIndex].get('comments')).push(cmtcntrol[0]);
+    this.form.updateValueAndValidity();
+    // this.getCommentsFor(costIndex, costItemIndex);
+    // (<FormArray>(<FormArray>this.itemsForm.get('ITEMS')).at(i).get('QUANTITY')).push(this.formBuilder.control(''));
+    // let cmmt = this.form.value.costs[costIndex].costItems[costItemIndex].comments;
+    // this.form.value.costs[costIndex].costItems[costItemIndex].comments.push({
+   console.log("form",this.form);
+    
+    this.form.updateValueAndValidity();
+    // this.form.value.costs.forEach((v: any, i: number) => {
+    //   v.costItems.forEach((j: any, k: number) => {
+    //     j.costs.forEach((m: any, n: any) => {
+    //       this.form.value.costs[i].costItems[k].costs[n].amount = (this.convertCurrency(this.form.value.costs[i].costItems[k].costs[n].amount, this.initialCurrency, this.sourceCurrency));
+    //     })
+    //   })
+    // })
+    // this.initialCurrency = this.sourceCurrency;
+  }
+  toggleComments(costIndex: number, costItemIndex: number){
+
+          this.form.value.costs[costIndex].costItems[costItemIndex].toggle = !this.form.value.costs[costIndex].costItems[costItemIndex].toggle ;
+
+  }
 }
