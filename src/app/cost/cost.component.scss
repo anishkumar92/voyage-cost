@@ -1,19 +1,11 @@
 .card-header{
     background-color: #2984ad;
+    margin-top:10px ;
     color: white;
     font-size: 15px;
     font-weight: bold;
-    // justify-content: flex-start !important ;
+    
 }
-
-// .container{
-//     padding-top: 25px;
-//     padding-left: 18px;
-//     padding-right: 18px;
-//     color: white;
-//     text-align: right;
-//    font-size: larger;
-// }
 
 .heading{
     padding-top:10px;
@@ -74,6 +66,8 @@
     background-color: white;
     padding-top: 5px;
     font-size: 15px;
+    border-left:0.1px solid #ccc;
+    border-right:0.1px solid #ccc;
 }
 
 .small-bottom-text{
@@ -88,7 +82,34 @@
 .mb-0{
     margin-bottom: 0px !important;
 }
-//  .mat-grid-tile-content ::ng-deep {
-//     justify-content: flex-start !important ;
-//     align-items: flex-start !important;
-//  }
+
+
+.comment-section{
+    background: #edf7fc;
+    border-left:0.1px solid #ccc;
+    border-right:0.1px solid #ccc;
+    font-size: 13px;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.total{
+    border-top:2px solid #5d94aa;
+    border-bottom:0.1px solid #ccc;
+    border-left:0.1px solid #ccc;
+    border-right:0.1px solid #ccc;
+
+}
+
+.comment-add{
+    background: #edf7fc;
+    border-left:0.1px solid #ccc;
+    border-right:0.1px solid #ccc;
+    font-size: 10px;
+    padding: 5px;
+}
+
+.cmt-dropwdown{
+    font-size: 10px;
+    min-width: 150px;
+}
