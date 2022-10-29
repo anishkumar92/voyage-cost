@@ -13,8 +13,6 @@ export class CostComponent implements OnInit {
   data: Cost[];
   exchangeApi: ExchangeRateAPI;
   dropdown: string[] = [];
-  screenedUSD = 1000.7870;
-  // costs:Cost[];
   sourceCurrency!: string;
   baseCurrency!: string;
   paymentCurrencies: PaymentCurrency[];
@@ -40,17 +38,11 @@ export class CostComponent implements OnInit {
   constructor(private route: ActivatedRoute, private fb: FormBuilder) {
     this.costApi = route.snapshot.data['costApi'];
     this.exchangeApi = route.snapshot.data['exchangeApi'];
-    // this.costs = this.costApi.costs;
     this.data = this.costApi.costs;
     this.sourceCurrency = this.costApi.daCurrency.currency;
     this.initialCurrency = this.costApi.daCurrency.currency;
     this.baseCurrency = this.costApi.baseCurrency.currency;
     this.paymentCurrencies = this.exchangeApi?.paymentCurrencies;
-    // this.selectedCurrency = this.paymentCurrencies?.find(v=> v.toCurrency === this.sourceCurrency)
-    console.log("exchangeApi", this.exchangeApi);
-    console.log("costApi", this.costApi);
-    console.log("dropdown", this.dropdown);
-
   }
 
   ngOnInit(): void {
@@ -61,7 +53,6 @@ export class CostComponent implements OnInit {
 
   getCurrencyList() {
     this.exchangeApi?.paymentCurrencies.forEach((v) => {
-      console.log(v.toCurrency);
       this.dropdown.push(v.toCurrency);
     });
   }
@@ -115,8 +106,6 @@ export class CostComponent implements OnInit {
   }
 
   getComments(comments: any[]) {
-    console.log("cmt", comments);
-
     return comments?.map(comments => this.fb.group({
       id: comments.daStage,
       daStage: comments.daStage,
@@ -131,8 +120,6 @@ export class CostComponent implements OnInit {
   }
 
   convertCurrency(amount: number, from: string, to: string, base = 2): number {
-
-
     let fromRate = this.paymentCurrencies?.find(v => v.toCurrency === from)?.exchangeRate;
     let toRate = this.paymentCurrencies?.find(v => v.toCurrency === to)?.exchangeRate;
     let toAmt: any = 0.00;
@@ -141,7 +128,6 @@ export class CostComponent implements OnInit {
       toAmt = ((toRate / fromRate) * amount).toFixed(base);;
     }
     return toAmt
-
   }
 
   onChange(e: any) {
@@ -161,7 +147,6 @@ export class CostComponent implements OnInit {
   }
 
   costItemFA(j: number): FormArray {
-    console.log("FA", this.costsFA.at(j).get('costItems'))
     return this.costsFA.at(j).get('costItems') as FormArray
   }
 

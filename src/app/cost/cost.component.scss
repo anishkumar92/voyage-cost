@@ -26,7 +26,6 @@
      padding-top: 10px;
     
 }
-
 .samerow{
     text-align: end;
    
@@ -35,7 +34,6 @@
     font-size: 12px;
     font-weight:500 ;
 }
-
 
 .currency-wrap{
     position:relative;
@@ -83,7 +81,6 @@
     margin-bottom: 0px !important;
 }
 
-
 .comment-section{
     background: #edf7fc;
     border-left:0.1px solid #ccc;
@@ -112,4 +109,9 @@
 .cmt-dropwdown{
     font-size: 10px;
     min-width: 150px;
+}
+
+.comment-text{
+    width: 820px;
+    height: 30px;
 }

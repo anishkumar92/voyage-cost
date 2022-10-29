@@ -114,13 +114,21 @@
             </div>
             <div class="row comment-add">
               <div class="col-2">
-                <select class="form-select cmt-dropwdown" aria-label="commentType" placeholder="sel">
+                <select class="form-select cmt-dropwdown" aria-label="commentType">
                   <option value="" disabled selected hidden>Select comment type</option>
                   <option value="Internal">Internal</option>
                   <option value="External">External</option>
                 </select>
               </div>
+              <div class="col-9">
+                <input name="add-comment" class="comment-text" placeholder="Type Comment" id="" />
+                  
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-secondary">Add</button>
+              </div>
             </div>
+            
           </ng-container>
 
           <div class="row card-content align-items-start total">
