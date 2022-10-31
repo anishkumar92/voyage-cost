@@ -4,6 +4,7 @@
   color: white;
   font-size: 15px;
   font-weight: bold;
+  padding: 5px 0px;
 }
 
 .heading {
@@ -116,4 +117,8 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.text-end{
+  text-align: end;
 }

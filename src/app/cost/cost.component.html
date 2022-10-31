@@ -25,18 +25,18 @@
       <div *ngFor="let cost of costs; let costIndex = index" [formGroupName]="costIndex">
         <div class="row card-header align-items-start">
           <div class="col-2">{{cost.value.name}}</div>
-          <div class="col-4">Account Code</div>
-          <div class="col-2 ">Quoted</div>
-          <div class="col-2">Screened</div>
-          <div class="col-4"></div>
+          <div class="col-2">Account Code</div>
+          <div class="col-2 text-end ">Quoted</div>
+          <div class="col-3 text-end">Screened</div>
+          <div class="col-3"></div>
         </div>
         <div formArrayName="costItems">
           <ng-container *ngFor="let costItem of getCostItemsFor(costIndex); let costItemIndex = index"
             [formGroupName]="costItemIndex">
             <div formArrayName="costs" class="row card-content align-items-start">
               <div class="col-2">{{costItem.value.name}}</div>
-              <div class="col-4">{{costItem.value.costItemAlias.accountingCode}}</div>
-              <div class="col-2 small-text" formGroupName="0">
+              <div class="col-2">{{costItem.value.costItemAlias.accountingCode}}</div>
+              <div class="col-2 small-text text-end" formGroupName="0">
                 <div class="row">
                   <p class="mb-0"> <span style="color: grey">{{sourceCurrency}}</span>
                     {{this.form.value.costs[costIndex].costItems[costItemIndex].costs[0].amount | number:'1.2-2'}}
@@ -48,7 +48,7 @@
                     | number:'1.2-2'}}</p>
                 </div>
               </div>
-              <div class="col-2" formGroupName="1">
+              <div class="col-3 text-end" formGroupName="1">
                 <div class="row">
 
                   <div class="currency-wrap">
@@ -64,7 +64,7 @@
                 </div>
 
               </div>
-              <div class="col-2">
+              <div class="col-3">
                 <button type="button" class="btn btn-outline-secondar"
                   (click)="toggleComments(costIndex,costItemIndex)">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat"
@@ -89,17 +89,13 @@
                   <span *ngIf="!checkInternal(costIndex,costItemIndex,commentsIndex)"
                     class="badge rounded-pill text-bg-dark">External</span>
                 </div>
-                <div class="col-6">
+                <div class="col-7">
                   {{comment.value?.comment}}
                 </div>
-                <div class="col-3 pt-2">
-                  <p><span>{{comment.value?.author}}</span>
+                <div class="col-4 pt-2">
+                  <span>{{comment.value?.author}}</span>
                     <span style="color: grey;padding-left: 10px;">{{comment.value?.date | date:'d MMMM y H:mm'}}</span>
-                  </p>
-
-
-                </div>
-                <div class="col-2">
+                  
                   <button style="color: grey" id="edit" type="button" class="btn btn-outline-secondar" (click)="onEdit(costIndex,costItemIndex,commentsIndex)"><svg
                       xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
                       viewBox="0 0 16 16">
@@ -157,8 +153,8 @@
 
           <div class="row card-content align-items-start total">
             <div class="col-2">Total</div>
-            <div class="col-4"></div>
-            <div class="col-2 small-text">
+            <div class="col-2"></div>
+            <div class="col-2 small-text text-end">
               <div class="row">
                 <p class="mb-0"> <span style="color: grey">{{sourceCurrency}}</span>
                   {{calTotal(this.form.value.costs[costIndex].costItems,0)| number:'1.2-2'}}</p>
@@ -169,7 +165,7 @@
                   | number:'1.2-2'}}</p>
               </div>
             </div>
-            <div class="col-2 small-text">
+            <div class="col-3 small-text text-end">
               <div class="row">
                 <p class="mb-0"> <span style="color: grey">{{sourceCurrency}}</span>
                   {{calTotal(this.form.value.costs[costIndex].costItems,1)| number:'1.2-2'}}</p>
@@ -180,7 +176,7 @@
                   | number:'1.2-2'}}</p>
               </div>
             </div>
-            <div class="col-4"></div>
+            <div class="col-3"></div>
           </div>
 
         </div>
