@@ -23,14 +23,14 @@
         amount: number;
     }
 
-    export interface Comment {
+    export interface Comments {
         id: number;
         daStage: string;
         persona: string;
         author: string;
         comment: string;
         type: string;
-        date: Date;
+        date: string;
     }
 
     export interface CostItem {
@@ -39,7 +39,7 @@
         costItemAlias: CostItemAlias;
         annotation: Annotation;
         costs: CostItemCost[];
-        comments: Comment[];
+        comments: Comments[];
     }
 
     export interface Cost {

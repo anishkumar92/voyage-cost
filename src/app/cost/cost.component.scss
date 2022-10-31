@@ -1,117 +1,119 @@
-.card-header{
-    background-color: #2984ad;
-    margin-top:10px ;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    
+.card-header {
+  background-color: #2984ad;
+  margin-top: 10px;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
 }
 
-.heading{
-    padding-top:10px;
-    font-size: x-large;
-    color:#135068
+.heading {
+  padding-top: 10px;
+  font-size: x-large;
+  color: #135068;
 }
 
-.dropdown-size{
-    font-size: 12px;
-    width: 75px;
-   
-    margin: 0px;
-    height: 40px;
+.dropdown-size {
+  font-size: 12px;
+  width: 75px;
+
+  margin: 0px;
+  height: 40px;
 }
 
-.currency-text{
-    font-size: 12px;
-     padding-top: 10px;
-    
+.currency-text {
+  font-size: 12px;
+  padding-top: 10px;
 }
-.samerow{
-    text-align: end;
-   
-    
-    margin: 0px;
-    font-size: 12px;
-    font-weight:500 ;
+.samerow {
+  text-align: end;
+
+  margin: 0px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.currency-wrap{
-    position:relative;
-    font-size: 12px;
-    min-width: 100px;
+.currency-wrap {
+  position: relative;
+  font-size: 12px;
+  min-width: 100px;
 }
 
-.currency-code{
-    position:absolute;
-    left:16px;
-    top:10px;
-    color: grey;
+.currency-code {
+  position: absolute;
+  left: 16px;
+  top: 10px;
+  color: grey;
 }
 
-.text-currency{
-    padding:10px 20px;
-    border:solid 1px #ccc;
-    border-radius:5px;
-    text-align: right;
-    font-size: 12px;
+.text-currency {
+  padding: 10px 20px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  text-align: right;
+  font-size: 12px;
 }
 
-.small-text{
-    font-size: 12px;
+.small-text {
+  font-size: 12px;
 }
 
-.card-content{
-    background-color: white;
-    padding-top: 5px;
-    font-size: 15px;
-    border-left:0.1px solid #ccc;
-    border-right:0.1px solid #ccc;
+.card-content {
+  background-color: white;
+  padding-top: 5px;
+  font-size: 15px;
+  border-left: 0.1px solid #ccc;
+  border-right: 0.1px solid #ccc;
 }
 
-.small-bottom-text{
-    font-size: 12px;
-    justify-content: end;
-    padding-right: 14px;
+.small-bottom-text {
+  font-size: 12px;
+  justify-content: end;
+  padding-right: 14px;
 }
-.grey{
-    color:grey;
-}
-
-.mb-0{
-    margin-bottom: 0px !important;
+.grey {
+  color: grey;
 }
 
-.comment-section{
-    background: #edf7fc;
-    border-left:0.1px solid #ccc;
-    border-right:0.1px solid #ccc;
-    font-size: 13px;
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
+.mb-0 {
+  margin-bottom: 0px !important;
 }
 
-.total{
-    border-top:2px solid #5d94aa;
-    border-bottom:0.1px solid #ccc;
-    border-left:0.1px solid #ccc;
-    border-right:0.1px solid #ccc;
-
+.comment-section {
+  background: #edf7fc;
+  border-left: 0.1px solid #ccc;
+  border-right: 0.1px solid #ccc;
+  font-size: 13px;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
 }
 
-.comment-add{
-    background: #edf7fc;
-    border-left:0.1px solid #ccc;
-    border-right:0.1px solid #ccc;
-    font-size: 10px;
-    padding: 5px;
+.total {
+  border-top: 2px solid #5d94aa;
+  border-bottom: 0.1px solid #ccc;
+  border-left: 0.1px solid #ccc;
+  border-right: 0.1px solid #ccc;
 }
 
-.cmt-dropwdown{
-    font-size: 10px;
-    min-width: 150px;
+.comment-add {
+  background: #edf7fc;
+  border-left: 0.1px solid #ccc;
+  border-right: 0.1px solid #ccc;
+  font-size: 10px;
+  padding: 5px;
 }
 
-.comment-text{
-    width: 820px;
-    height: 30px;
+.cmt-dropwdown {
+  font-size: 10px;
+  min-width: 150px;
+}
+
+.comment-text {
+  width: 820px;
+  height: 30px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

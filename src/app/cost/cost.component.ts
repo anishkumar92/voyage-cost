@@ -1,17 +1,41 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Cost, CostAPI, ExchangeRateAPI, PaymentCurrency, CostItem } from '../models';
-import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Cost,
+  CostAPI,
+  ExchangeRateAPI,
+  PaymentCurrency,
+  CostItem,
+  CostItemCost,
+  Comments,
+} from '../models';
+import {
+  AbstractControl,
+  ControlContainer,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-cost',
   templateUrl: './cost.component.html',
-  styleUrls: ['./cost.component.scss']
+  styleUrls: ['./cost.component.scss'],
 })
 export class CostComponent implements OnInit {
   @ViewChildren('commentInput') commentInput!: QueryList<ElementRef>;
-  // @ViewChild('commentInput') commentInput!:ElementRef;
-  @ViewChild('internaltype') internaltype!:ElementRef;
+  @ViewChildren('internaltype') internaltype!: QueryList<ElementRef>;
+  @ViewChildren('commentInputEdit') commentInputEdit!: QueryList<ElementRef>;
+  @ViewChildren('internaltypeEdit') internaltypeEdit!: QueryList<ElementRef>;
 
   costApi: CostAPI;
   data: Cost[];
@@ -29,15 +53,25 @@ export class CostComponent implements OnInit {
   }
 
   getCostItemsFor(index: number) {
-    return (<FormArray>(<FormArray>this.form.get('costs')).controls[index].get('costItems')).controls;
+    return (<FormArray>(
+      (<FormArray>this.form.get('costs')).controls[index].get('costItems')
+    )).controls;
   }
 
   getCostItemCostFor(costIndex: number, costItemIndex: number) {
-    return (<FormArray>(<FormArray>(<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')).controls[costItemIndex].get('costs')).controls;
+    return (<FormArray>(
+      (<FormArray>(
+        (<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')
+      )).controls[costItemIndex].get('costs')
+    )).controls;
   }
 
   getCommentsFor(costIndex: number, costItemIndex: number) {
-    return (<FormArray>(<FormArray>(<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')).controls[costItemIndex].get('comments')).controls;
+    return (<FormArray>(
+      (<FormArray>(
+        (<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')
+      )).controls[costItemIndex].get('comments')
+    )).controls;
   }
   constructor(private route: ActivatedRoute, private fb: FormBuilder) {
     this.costApi = route.snapshot.data['costApi'];
@@ -50,18 +84,17 @@ export class CostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.getCurrencyList();
     this.buildForm();
   }
 
-  getCurrencyList() {
+  getCurrencyList(): void {
     this.exchangeApi?.paymentCurrencies.forEach((v) => {
       this.dropdown.push(v.toCurrency);
     });
   }
 
-  buildForm() {
+  buildForm(): void {
     this.form = new FormGroup({
       daCurrency: new FormGroup({
         currency: new FormControl(''),
@@ -70,80 +103,101 @@ export class CostComponent implements OnInit {
         currency: new FormControl(''),
         exchangeRate: new FormControl(''),
       }),
-      costs: this.fb.array(this.getCost())
+      costs: this.fb.array(this.getCost()),
     });
   }
 
-  getCost() {
-    return this.data.map(cost => this.fb.group({
-      id: cost.id,
-      name: cost.name,
-      displayOrder: cost.displayOrder,
-      costItems: this.fb.array(this.getCostItems(cost.costItems)),
-    }));
+  getCost(): Array<FormGroup> {
+    return this.data.map((cost) =>
+      this.fb.group({
+        id: cost.id,
+        name: cost.name,
+        displayOrder: cost.displayOrder,
+        costItems: this.fb.array(this.getCostItems(cost.costItems)),
+      })
+    );
   }
 
-  getCostItems(costItems: any[]) {
-
-    return costItems.map(costItems => this.fb.group({
-      id: costItems.id,
-      name: costItems.name,
-      costItemAlias: {
-        accountingCode: costItems.costItemAlias.accountingCode
-      },
-      annotation: {
-        id: costItems.annotation.id,
-        name: costItems.annotation.name,
-      },
-      costs: costItems.costs ? this.fb.array(this.getCostItemCost(costItems.costs)) : this.fb.array(this.getCostItemCost([])),
-      comments: costItems.comments ? this.fb.array(this.getComments(costItems.comments)) : this.fb.array(this.getComments([])),
-      toggle: costItems.comments? true:false
-    }));
+  getCostItems(costItems: Array<CostItem>): Array<FormGroup> {
+    return costItems.map((costItems) =>
+      this.fb.group({
+        id: costItems.id,
+        name: costItems.name,
+        costItemAlias: {
+          accountingCode: costItems.costItemAlias.accountingCode,
+        },
+        annotation: {
+          id: costItems.annotation.id,
+          name: costItems.annotation.name,
+        },
+        costs: costItems.costs
+          ? this.fb.array(this.getCostItemCost(costItems.costs))
+          : this.fb.array(this.getCostItemCost([])),
+        comments: costItems.comments
+          ? this.fb.array(this.getComments(costItems.comments))
+          : this.fb.array(this.getComments([])),
+        toggle: true,
+        addButton: true,
+      })
+    );
   }
 
-  getCostItemCost(costItemsCost: any[]) {
-    return costItemsCost.map(costItemsCost => this.fb.group({
-      daStage: costItemsCost.daStage,
-      persona: costItemsCost.persona,
-      type: costItemsCost.type,
-      amount: costItemsCost.amount.toFixed(2),
-    }));
+  getCostItemCost(costItemsCost: Array<CostItemCost>): Array<FormGroup> {
+    return costItemsCost.map((costItemsCost) =>
+      this.fb.group({
+        daStage: costItemsCost.daStage,
+        persona: costItemsCost.persona,
+        type: costItemsCost.type,
+        amount: costItemsCost.amount
+          ? parseFloat(costItemsCost.amount.toFixed(2))
+          : costItemsCost.amount,
+      })
+    );
   }
 
-  getComments(comments: any[]) {
-    return comments?.map(comments => this.fb.group({
-      id: comments.daStage,
-      daStage: comments.daStage,
-      persona: comments.persona,
-      author: comments.author,
-      comment: comments.comment,
-      type: comments.type,
-      date: comments.date
-    }));
-
-
+  getComments(comments: Array<Comments>): Array<FormGroup> {
+    return comments?.map((comments) =>
+      this.fb.group({
+        id: comments.daStage,
+        daStage: comments.daStage,
+        persona: comments.persona,
+        author: comments.author,
+        comment: comments.comment,
+        type: comments.type,
+        date: comments.date,
+        editMode: false,
+      })
+    );
   }
 
   convertCurrency(amount: number, from: string, to: string, base = 2): number {
-    let fromRate = this.paymentCurrencies?.find(v => v.toCurrency === from)?.exchangeRate;
-    let toRate = this.paymentCurrencies?.find(v => v.toCurrency === to)?.exchangeRate;
-    let toAmt: any = 0.00;
+    let fromRate = this.paymentCurrencies?.find(
+      (v) => v.toCurrency === from
+    )?.exchangeRate;
+    let toRate = this.paymentCurrencies?.find(
+      (v) => v.toCurrency === to
+    )?.exchangeRate;
+    let toAmt: number = 0.0;
     if (fromRate && toRate) {
-
-      toAmt = ((toRate / fromRate) * amount).toFixed(base);;
+      toAmt = parseFloat(((toRate / fromRate) * amount).toFixed(base));
     }
-    return toAmt
+    return toAmt;
   }
 
-  onChange(e: any) {
-    this.sourceCurrency = e;
-    this.form.value.costs.forEach((v: any, i: number) => {
-      v.costItems.forEach((j: any, k: number) => {
-        j.costs.forEach((m: any, n: any) => {
-          this.form.value.costs[i].costItems[k].costs[n].amount = (this.convertCurrency(this.form.value.costs[i].costItems[k].costs[n].amount, this.initialCurrency, this.sourceCurrency));
-        })
-      })
-    })
+  onChange(currency: string): void {
+    this.sourceCurrency = currency;
+    this.form.value.costs.forEach((cost: Cost, i: number) => {
+      cost.costItems.forEach((costItem: CostItem, k: number) => {
+        costItem.costs.forEach((m: CostItemCost, n: number) => {
+          this.form.value.costs[i].costItems[k].costs[n].amount =
+            this.convertCurrency(
+              this.form.value.costs[i].costItems[k].costs[n].amount,
+              this.initialCurrency,
+              this.sourceCurrency
+            );
+        });
+      });
+    });
     this.initialCurrency = this.sourceCurrency;
   }
 
@@ -151,85 +205,201 @@ export class CostComponent implements OnInit {
     return this.form.get('costs') as FormArray;
   }
 
-  costItemFA(j: number): FormArray {
-    return this.costsFA.at(j).get('costItems') as FormArray
+  costItemFA(costItemIndex: number): FormArray {
+    return this.costsFA.at(costItemIndex).get('costItems') as FormArray;
   }
 
-  calTotal(costItem: CostItem[], index: number) {
-    let total = 0;
-    costItem.forEach((v, i) => {
-      v.costs.forEach((j, k) => {
+  calTotal(costItem: Array<CostItem>, index: number): number {
+    let total: number = 0;
+    costItem.forEach((costItem: CostItem) => {
+      costItem.costs.forEach((costItemCost: CostItemCost, k: number) => {
         if (k === index) {
-
-          total = total + parseInt(j.amount.toString())
+          total = total + costItemCost.amount;
         }
       });
     });
-    return total
+    return total;
   }
 
   convertToBase(amount: number, from: string): number {
-    let fromRate = this.paymentCurrencies?.find(v => v.toCurrency === from)?.exchangeRate;
-    let toRate = this.paymentCurrencies?.find(v => v.toCurrency === this.baseCurrency)?.exchangeRate;
-    let toAmt: any = 0.00;
+    let fromRate = this.paymentCurrencies?.find(
+      (payCurrency: PaymentCurrency) => payCurrency.toCurrency === from
+    )?.exchangeRate;
+    let toRate = this.costApi.baseCurrency.exchangeRate;
+    let toAmt: number = 0.0;
     if (fromRate && toRate) {
-      toAmt = ((toRate / fromRate) * amount).toFixed(2);
+      toAmt = Number((toRate / fromRate) * amount);
     }
-    return toAmt
+    return toAmt;
   }
 
-  checkInternal(costIndex: number, costItemIndex: number, commentIndex: number) {
-    return this.form.value.costs[costIndex].costItems[costItemIndex].comments[commentIndex].type == "Internal"
+  checkInternal(
+    costIndex: number,
+    costItemIndex: number,
+    commentIndex: number
+  ): boolean {
+    return (
+      this.form.value.costs[costIndex].costItems[costItemIndex].comments[
+        commentIndex
+      ].type == 'Internal'
+    );
   }
 
-  addComments(costIndex: number, costItemIndex: number) {
-    let comment ="";
-   this.commentInput.forEach((v,i)=>{
-    console.log(v)
-    if(i===costItemIndex){
-      comment=v.nativeElement.value;
-
+  checkAdd(e: Event, costIndex: number, costItemIndex: number): void {
+    let comment: string = '';
+    let internaltype = '';
+    let tempID = `i${costIndex}-j${costItemIndex}`;
+    this.commentInput.forEach((v, i) => {
+      if (tempID === v.nativeElement.id) {
+        comment = v.nativeElement.value;
+      }
+    });
+    this.internaltype.forEach((v, i) => {
+      if (tempID === v.nativeElement.id) {
+        internaltype = v.nativeElement.value;
+      }
+    });
+    if (
+      comment == null ||
+      comment == undefined ||
+      comment == '' ||
+      internaltype == '' ||
+      internaltype == null ||
+      internaltype == undefined
+    ) {
+      this.form.value.costs[costIndex].costItems[costItemIndex].addButton =
+        true;
+    } else {
+      this.form.value.costs[costIndex].costItems[costItemIndex].addButton =
+        false;
     }
-   });
-// let dumarr= this.form.value.costs[costIndex].costItems[costItemIndex].comments;
-    let mmt = [{ id: 503,
-      daStage: "PDA",
-      persona: "BACKOFFICE",
-      author: "Mr. Agency BO",
-      comment: comment,
-      type: this.internaltype?.nativeElement.value,
-      date: "2021-03-01T10:15:35.927924Z"
-    }];
-
-    // dumarr.push(mmt);
-    let cmtcntrol = this.getComments(mmt);
-    // let smt:any = {} 
-    
-    // console.log("cmt",cmtcntrol)
-    // this.form.controls.costs[0].costItems[0].comments.push(mmt)
-    // (<FormArray>(<FormArray>(<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')).controls[costItemIndex].get('comments')).removeAt(0);
-
-    (<FormArray>(<FormArray>(<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')).controls[costItemIndex].get('comments')).push(cmtcntrol[0]);
-    this.form.updateValueAndValidity();
-    // this.getCommentsFor(costIndex, costItemIndex);
-    // (<FormArray>(<FormArray>this.itemsForm.get('ITEMS')).at(i).get('QUANTITY')).push(this.formBuilder.control(''));
-    // let cmmt = this.form.value.costs[costIndex].costItems[costItemIndex].comments;
-    // this.form.value.costs[costIndex].costItems[costItemIndex].comments.push({
-   console.log("form",this.form);
-    
-    this.form.updateValueAndValidity();
-    // this.form.value.costs.forEach((v: any, i: number) => {
-    //   v.costItems.forEach((j: any, k: number) => {
-    //     j.costs.forEach((m: any, n: any) => {
-    //       this.form.value.costs[i].costItems[k].costs[n].amount = (this.convertCurrency(this.form.value.costs[i].costItems[k].costs[n].amount, this.initialCurrency, this.sourceCurrency));
-    //     })
-    //   })
-    // })
-    // this.initialCurrency = this.sourceCurrency;
   }
-  toggleComments(costIndex: number, costItemIndex: number){
 
-          this.form.value.costs[costIndex].costItems[costItemIndex].toggle = !this.form.value.costs[costIndex].costItems[costItemIndex].toggle ;
+  checkType(e: Event, costIndex: number, costItemIndex: number): void {
+    let comment: any = '';
+    let internaltype = '';
+    let tempID = `i${costIndex}-j${costItemIndex}`;
+    this.commentInput.forEach((v, i) => {
+      if (tempID === v.nativeElement.id) {
+        comment = v.nativeElement;
+      }
+    });
+    this.internaltype.forEach((v, i) => {
+      if (tempID === v.nativeElement.id) {
+        internaltype = v.nativeElement.value;
+        comment.disabled = false;
+      }
+    });
+  }
 
+  addComments(costIndex: number, costItemIndex: number): void {
+    let comment: string = '';
+    let internaltype = 'Internal';
+    let tempID = `i${costIndex}-j${costItemIndex}`;
+    this.commentInput.forEach((v, i) => {
+      if (tempID === v.nativeElement.id) {
+        comment = v.nativeElement.value;
+        v.nativeElement.value = '';
+        v.nativeElement.disabled = true;
+      }
+    });
+    this.internaltype.forEach((v, i) => {
+      if (tempID === v.nativeElement.id) {
+        internaltype = v.nativeElement.value;
+        v.nativeElement.value = '';
+      }
+    });
+    let curDate = new Date();
+    let newComment = [
+      {
+        id: 503,
+        daStage: 'PDA',
+        persona: 'BACKOFFICE',
+        author: 'Mr. Agency BO',
+        comment: comment,
+        type: internaltype,
+        editMode: false,
+        date: curDate.toISOString(),
+      },
+    ];
+
+    let commentCtrl: Array<FormGroup> = this.getComments(newComment);
+
+    (<FormArray>(
+      (<FormArray>(
+        (<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')
+      )).controls[costItemIndex].get('comments')
+    )).push(commentCtrl[0]);
+    this.form.value.costs[costIndex].costItems[costItemIndex].toggle = true;
+  }
+
+  toggleComments(costIndex: number, costItemIndex: number): void {
+    this.form.value.costs[costIndex].costItems[costItemIndex].toggle
+      ? (this.form.value.costs[costIndex].costItems[costItemIndex].toggle =
+          false)
+      : (this.form.value.costs[costIndex].costItems[costItemIndex].toggle =
+          true);
+  }
+
+  removeCmt(
+    costIndex: number,
+    costItemIndex: number,
+    costItemCostIndex: number
+  ): void {
+    (<FormArray>(
+      (<FormArray>(
+        (<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')
+      )).controls[costItemIndex].get('comments')
+    )).removeAt(costItemCostIndex);
+    this.form.value.costs[costIndex].costItems[costItemIndex].toggle = true;
+  }
+
+  onEdit(costIndex: number, costItemIndex: number, commentIndex: number): void {
+    this.form.value.costs[costIndex].costItems[costItemIndex].comments[
+      commentIndex
+    ].editMode = true;
+    this.form.value.costs[costIndex].costItems[costItemIndex].toggle = true;
+  }
+
+  saveComments(
+    costIndex: number,
+    costItemIndex: number,
+    commentIndex: number
+  ): void {
+    let comment: string = '';
+    let internaltype = 'Internal';
+    let tempID = `i${costIndex}-j${costItemIndex}-k${commentIndex}`;
+    this.commentInputEdit.forEach((v, i) => {
+      if (tempID === v.nativeElement.id) {
+        comment = v.nativeElement.value;
+        v.nativeElement.value = '';
+      }
+    });
+    this.internaltypeEdit.forEach((v, i) => {
+      if (tempID === v.nativeElement.id) {
+        internaltype = v.nativeElement.value;
+        v.nativeElement.value = '';
+      }
+    });
+    let curDate = new Date();
+
+    let editComment = [
+      {
+        id: 503,
+        daStage: 'PDA',
+        persona: 'BACKOFFICE',
+        author: 'Mr. Agency BO',
+        comment: comment,
+        type: internaltype,
+        editMode: false,
+        date: curDate.toISOString(),
+      },
+    ];
+    (<FormArray>(
+      (<FormArray>(
+        (<FormArray>this.form.get('costs')).controls[costIndex].get('costItems')
+      )).controls[costItemIndex].get('comments')
+    )).controls[commentIndex].setValue(editComment[0]);
+    this.form.value.costs[costIndex].costItems[costItemIndex].toggle = true;
   }
 }
